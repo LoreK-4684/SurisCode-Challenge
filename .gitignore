@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/reservas.client/.vs
+/reservas.client/obj/Debug
+/reservas.client/node_modules
+/Reservas.Server/.vs
+/Reservas.Server/Reservas.Api/.vs
+/Reservas.Server/Reservas.Api/bin/Debug/net6.0
+/Reservas.Server/Reservas.Api/obj
+/Reservas.Server/Reservas.DataLayer/bin/Debug/net6.0
+/Reservas.Server/Reservas.DataLayer/obj
+/Reservas.Server/Reservas.ServiceLayer/bin/Debug/net6.0
+/Reservas.Server/Reservas.ServiceLayer/obj
