@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
       <Version>6.*-*</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.36" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
@@ -20,6 +21,8 @@
     <ProjectReference Include="..\reservas.client\reservas.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\Reservas.DataLayer\Reservas.DataLayer.csproj" />
+    <ProjectReference Include="..\Reservas.ServiceLayer\Reservas.ServiceLayer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using Reservas.DataLayer;
+using Reservas.ServiceLayer;
+using Reservas.ServiceLayer.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,8 +15,10 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddDataLayer();
+builder.Services.AddServiceLayer();
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -20,7 +27,6 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
