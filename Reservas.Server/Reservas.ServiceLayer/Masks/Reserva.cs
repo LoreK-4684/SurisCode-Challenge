@@ -8,8 +8,9 @@ namespace Reservas.ServiceLayer.Masks
 {
     public class Reserva
     {
-        public DateTime Fecha { get; internal set; }
-        public string Cliente { get; internal set; }
-        public string Servicio { get; internal set; }
+        public int Id { get; set; }
+        public DateTime Fecha { get; set; }
+        public string Cliente { get; set; }
+        public string Servicio { get; set; }
     }
 }

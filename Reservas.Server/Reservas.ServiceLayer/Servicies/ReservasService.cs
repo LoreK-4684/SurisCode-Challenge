@@ -46,9 +46,10 @@ namespace Reservas.ServiceLayer.Services
 
             var res = new CreateReservaResponse();
             res.Reserva = new Masks.Reserva();
-            res.Reserva.Fecha = request.Fecha;
-            res.Reserva.Cliente = request.Cliente;
-            res.Reserva.Servicio = request.Servicio;
+            res.Reserva.Id = reserva.Id;
+            res.Reserva.Fecha = reserva.Fecha;
+            res.Reserva.Cliente = reserva.Cliente;
+            res.Reserva.Servicio = reserva.Servicio;
             return res;
         }
 
@@ -60,6 +61,7 @@ namespace Reservas.ServiceLayer.Services
 
             res.Reservas = reservas.Select(x => new Masks.Reserva()
             {
+                Id = x.Id,
                 Cliente = x.Cliente,
                 Fecha = x.Fecha,
                 Servicio = x.Servicio
