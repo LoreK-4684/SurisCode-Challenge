@@ -30,19 +30,21 @@ namespace Reservas.ServiceLayer.Services
 
             var hsRange = Enumerable.Range(9, 9).ToList();
 
+            var dt = DateTime.Parse(request.Fecha);
+
             if (!_serviciosRepository.Exists(request.Servicio))
                 throw new BusinessException("El servicio solicitado no existe");
 
-            if (!hsRange.Contains(request.Fecha.Hour))
+            if (!hsRange.Contains(dt.Hour))
                 throw new BusinessException("El horario no es válido");
 
-            if (_repository.Exists(request.Fecha))
+            if (_repository.Exists(dt))
                 throw new BusinessException("Ya existe una reserva para ese día y horario");
 
-            if (_repository.Exists(request.Fecha, request.Cliente))
+            if (_repository.Exists(dt, request.Cliente))
                 throw new BusinessException("El cliente ya tiene una reserva para ese día");
 
-            var reserva = _repository.Create(request.Servicio, request.Fecha, request.Cliente);
+            var reserva = _repository.Create(request.Servicio, dt, request.Cliente);
 
             var res = new CreateReservaResponse();
             res.Reserva = new Masks.Reserva();

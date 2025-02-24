@@ -25,8 +25,8 @@ namespace Reservas.Server.Controllers
         }
 
         [HttpPost]
-        [Route("AltaReserva")]
-        public ActionResult AltaReserva([FromBody]CreateReservaRequest request)
+        [Route("CreateReserva")]
+        public ActionResult CreateReserva([FromBody]CreateReservaRequest request)
         {
             return Secure(() => _service.Create(request));
         }

@@ -2,6 +2,6 @@
 {
     public class TurnoDisponibleByFechaRequest
     {
-        public DateTime Fecha {  get; set; }
+        public string Fecha {  get; set; }
     }
 }
