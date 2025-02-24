@@ -28,10 +28,10 @@ namespace Reservas.ServiceLayer.Services
 
             // Turnos Disponibles de 9hs a 18hs
 
-            var hsRange = Enumerable.Range(9,17).ToList();
+            var hsRange = Enumerable.Range(9,9).ToList();
 
             var hsOcupadas = reservasByFecha.Select(x => x.Fecha.Hour).ToList();
-            var hsDisponibles = hsRange.Select(x => !hsOcupadas.Contains(x));
+            var hsDisponibles = hsRange.Where(x => !hsOcupadas.Contains(x));
 
             res.Fecha = request.Fecha;
             res.TurnosDisponibles = hsDisponibles.Select(x => new TurnoDisponible() { Hora = x });

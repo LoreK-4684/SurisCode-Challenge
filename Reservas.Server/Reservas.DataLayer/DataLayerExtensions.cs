@@ -19,6 +19,7 @@ namespace Reservas.DataLayer
             });
 
             services.AddScoped<IReservasRepository,ReservasRepository>();
+            services.AddScoped<IServiciosRepository,ServiciosRepository>();
 
             return services;
         }

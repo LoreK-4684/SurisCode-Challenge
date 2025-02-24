@@ -3,6 +3,7 @@ using Reservas.DataLayer.Repositories;
 using Reservas.ServiceLayer.Masks;
 using Reservas.ServiceLayer.Requests;
 using Reservas.ServiceLayer.Responses;
+using Reservas.ServiceLayer.Support;
 
 namespace Reservas.ServiceLayer.Services
 {
@@ -27,19 +28,19 @@ namespace Reservas.ServiceLayer.Services
         {
             // Turnos Disponibles de 9hs a 18hs
 
-            var hsRange = Enumerable.Range(9, 17).ToList();
+            var hsRange = Enumerable.Range(9, 9).ToList();
 
             if (!_serviciosRepository.Exists(request.Servicio))
-                throw new Exception("El servicio solicitado no existe");
+                throw new BusinessException("El servicio solicitado no existe");
 
             if (!hsRange.Contains(request.Fecha.Hour))
-                throw new Exception("El horario no es válido");
+                throw new BusinessException("El horario no es válido");
 
             if (_repository.Exists(request.Fecha))
-                throw new Exception("Ya existe una reserva para ese día y horario");
+                throw new BusinessException("Ya existe una reserva para ese día y horario");
 
             if (_repository.Exists(request.Fecha, request.Cliente))
-                throw new Exception("El cliente ya tiene una reserva para ese día");
+                throw new BusinessException("El cliente ya tiene una reserva para ese día");
 
             var reserva = _repository.Create(request.Servicio, request.Fecha, request.Cliente);
 

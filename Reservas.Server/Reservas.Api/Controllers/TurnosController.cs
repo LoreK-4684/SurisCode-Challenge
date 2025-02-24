@@ -18,7 +18,7 @@ namespace Reservas.Server.Controllers
 
         [HttpGet]
         [Route("DisponiblesByFecha")]
-        public ActionResult DisponiblesByFecha([FromBody]TurnoDisponibleByFechaRequest request)
+        public ActionResult DisponiblesByFecha([FromQuery]TurnoDisponibleByFechaRequest request)
         {
             return Secure(() => _service.DisponiblesByFecha(request));
         }

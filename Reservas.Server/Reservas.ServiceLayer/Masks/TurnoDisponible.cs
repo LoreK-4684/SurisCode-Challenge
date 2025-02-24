@@ -8,6 +8,6 @@ namespace Reservas.ServiceLayer.Masks
 {
     public class TurnoDisponible
     {
-        public bool Hora { get; set; }
+        public int Hora { get; set; }
     }
 }
