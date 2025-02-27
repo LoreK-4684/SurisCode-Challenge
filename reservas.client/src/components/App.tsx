@@ -4,6 +4,7 @@ import { TextField, FormControl, Select, Button, MenuItem } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/en-gb';
 
 interface Reserva {
     id: number;
@@ -17,7 +18,7 @@ interface Service {
 }
 
 interface Turno {
-    Hora: string;
+    hora: number;
 }
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
     const [turnos, setturnos] = useState<Turno[]>();
     const [selectedService, setselectedservice] = useState<string>();
     const [selectedClient, setselectedclient] = useState<string>();
-    const [selectedDate, setselecteddate] = useState<string>();
+    const [selectedDate, setselecteddate] = useState<Dayjs>();
     const [selectedHora, setselectedhora] = useState<string>();
 
     useEffect(() => {
@@ -73,6 +74,7 @@ function App() {
         <TextField
             required id="cliente"
             variant="outlined"
+            value={selectedClient}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setselectedclient(event.target.value);
             }} />
@@ -81,6 +83,7 @@ function App() {
             required
             labelId="servicio-label"
             id="service"
+            value={selectedService ? selectedService : ''}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setselectedservice(event.target.value);
             }}        >
@@ -91,22 +94,25 @@ function App() {
         <h3>Fecha</h3>
         <DatePicker
             label="Fecha"
+            type="datetime-local"
+            value={selectedDate}
             onChange={(value) => { GetTurnos(value); }}
         >
         </DatePicker>
 
-        {turnos &&
+        {turnos && selectedDate &&
             <div>
                 <h3>Horario</h3>
                 <Select
                     required
                     labelId="hora-label"
                     id="hora"
+                    value={selectedHora}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                         setselectedhora(event.target.value);
                     }}                >
-                    {turnos.map((hora, index) =>
-                        < MenuItem key={index} value={hora}>{hora}Hs.</MenuItem>
+                    {turnos.map((td, index) =>
+                        < MenuItem key={index} value={td.hora.toString()}>{td.hora}Hs.</MenuItem>
                     )
                     }
                 </Select>
@@ -123,7 +129,18 @@ function App() {
                 }
 
                 const info = await CreateReserva(selectedClient, selectedService, selectedDate, selectedHora);
-                alert(info);
+
+                if (info.hasError) {
+                    alert(info.message);
+                }
+                else {
+                    const array = reservas?.concat(info.data.reserva);
+                    setreservas(array);
+                    setselectedservice('');
+                    setselectedclient('');
+                    setselectedhora(9);
+                    setselecteddate(null);
+                }
             }}
         >
             Crear Reserva
@@ -132,7 +149,9 @@ function App() {
 
     return (
         <div>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                adapterLocale="en-gb">
             <h1>Sistema de Reservas</h1>
             <div>
                 <h2>Nueva Reserva</h2>
@@ -162,28 +181,27 @@ function App() {
 
     async function GetTurnos(value) {
         setselecteddate(value);
-        /*
-        const obj = { Fecha: value.toString() };
-        const response = await fetch('http://localhost:5138/Turnos/DisponiblesByFecha?request=' + obj);
+        
+        const params = new URLSearchParams({ Fecha: value.toString()});
+        const response = await fetch('http://localhost:5138/Turnos/DisponiblesByFecha?' + params);
         const info = await response.json();
-        setturnos(info.data.turnosdisponibles);
-        */
-        const array = ["9", "10", "11", "12", "13", "14", "15", "16", "17"];
-        setturnos(array);
+        setturnos(info.data.turnosDisponibles);
     }
 
     async function CreateReserva(selectedClient: string, selectedService: string, selectedDate: Dayjs, selectedHora: string) {
 
         const newDate = selectedDate.hour(selectedHora).toString();
-        const response = fetch('http://localhost:5138/Reservas/CreateReserva', {
+        const response = await fetch('http://localhost:5138/Reservas/CreateReserva', {
             method: 'post',
-            body: {
-                request: {
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            body: JSON.stringify({
                     "Cliente": selectedClient,
                     "Servicio": selectedService,
                     "Fecha": newDate
-                }
-            }
+            })
         });
         const info = await response.json();
         return info;

@@ -25,14 +25,14 @@ namespace Reservas.ServiceLayer.Services
             var res = new TurnoDisponibleByFechaResponse();
 
             var dt = DateTime.Parse(request.Fecha);
-            var reservasByFecha = _repository.GetByDate(dt);
+            var reservasByFecha = _repository.GetByDate(dt).ToList();
 
             // Turnos Disponibles de 9hs a 18hs
 
             var hsRange = Enumerable.Range(9,9).ToList();
 
             var hsOcupadas = reservasByFecha.Select(x => x.Fecha.Hour).ToList();
-            var hsDisponibles = hsRange.Where(x => !hsOcupadas.Contains(x));
+            var hsDisponibles = hsRange.Where(x => !hsOcupadas.Contains(x)).ToList();
 
             res.Fecha = dt;
             res.TurnosDisponibles = hsDisponibles.Select(x => new TurnoDisponible() { Hora = x });

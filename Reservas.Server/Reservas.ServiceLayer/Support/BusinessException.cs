@@ -8,8 +8,9 @@ namespace Reservas.ServiceLayer.Support
 {
     public class BusinessException : Exception
     {
-        public BusinessException(string? message) : base(message)
+        public BusinessException(string message, int code) : base(message)
         {
+            Code = code;
         }
 
         public int Code { get; set; }
